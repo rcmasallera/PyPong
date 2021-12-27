@@ -28,6 +28,7 @@ SCORE_TEXT_RECT.center = (WIDTH + 90, HEIGHT//2)
 LEARN_MODE = False
 
 
+
 class Ball:
     def __init__(self,  wp, hp, speed_x=-1, speed_y=0, radius=10, color=pygame.Color('red')):
         self.radius = radius
@@ -129,6 +130,9 @@ def score_update():
 if LEARN_MODE:
     play_info_file = open("play.csv", "w")
     print("WIDTH_POSITION,HEIGHT_POSITION,SPEED_X,SPEED_Y,PADDLE.CENTRAL_POSITION", file=play_info_file)
+    SPEED = SPEED//2
+    PADDLE.start_position_0[1] = 2 * BORDER
+    PADDLE.start_position_1[1] = 2 * BORDER
 else:
     CPU_DATA_PLAY = read_data()
 
@@ -141,7 +145,7 @@ else:
     CPU_DATA_FRAME = pandas.DataFrame(columns=['WIDTH_POSITION', 'HEIGHT_POSITION', 'SPEED_X', 'SPEED_Y'])
 
 while not EXIT:
-    CPU_PADDLE.update(0)
+    # clock.tick(600)
     CPU_PADDLE.show('blue')
     BALL.update(PADDLE)
     screen.blit(SCORE_TEXT, SCORE_TEXT_RECT)
@@ -168,7 +172,6 @@ while not EXIT:
         CPU_POSITION = CPU_IA.predict(CPU_PADDLE_MOVE)
         CPU_PADDLE.start_position_0[0] = CPU_POSITION[0]
         CPU_PADDLE.start_position_1[0] = CPU_PADDLE.start_position_0[0] + CPU_PADDLE.height
-
     CPU_PADDLE.update(0)
     BALL.update(PADDLE)
     PADDLE.update(0)
